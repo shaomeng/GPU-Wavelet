@@ -1,0 +1,92 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{Porting Wavelet Transforms onto Many-core Architectures ---
+        Using the EAVL Framework}
+\author{Samuel Li}
+\date{May 2015}
+
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{color}
+\newcommand{\fix}[1]{\textcolor{red}{#1}} %Put words in Red
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\begin{itemize}
+\item the area and problems to be explored, 
+\item the motivations for choosing this area, 
+\item possible directions of investigation, 
+\item proposed type of project, 
+\item the expected results.
+\end{itemize}
+\end{abstract}
+
+\section{Introduction}
+Wavelet transform is a technique rooted from the signal processing 
+community~\cite{daubechies1990wavelet, mallat1999wavelet},
+and soon people discovered its capacity in data reduction.
+%
+One of the most prominent use of wavelet in data reduction has been
+the JPEG2000 still image compression
+standard~\cite{adams2001jpeg,usevitch2001tutorial}. 
+
+In the scientific simulation and visualization field, researchers have
+explored the use of discrete wavelet transforms (DWT) in two 
+relative different directions, both aiming data reduction.
+%
+In the first direction, researchers use the DWT to provide data access
+in a multi-resolution fashion, meaning that an approximation of the volume data
+set is loaded at a lower resolution at first, and the region of interest
+is then reconstructed with a higher resolution~\cite{mallat1989theory,
+kanai1998digital, baldwin2003multi}.
+%
+In the second direction, the volume data is reconstructed at the 
+original resolution, but at a lossy manner~\cite{bethel2012high,
+norton2012vapor}.
+
+In a typical use case, the DWT is normally applied on each dimension of a
+volume data set (e.g. X, Y, and Z dimension). 
+%
+Moreover, people always apply multiple rounds of DWT to achieve better
+data reduction in applications.
+%
+The overall DWT on a volume data set is then becoming a heavy computation
+task in most systems, thus a faster computation of DWT is much desired. 
+
+Many-core architectures have emerged recently as accelerators for a 
+traditional computer system.
+%
+On the one hand, these accelerator cards have much more compute units 
+than a traditional CPU (some NVidia GPUs have thousands of compute units).
+%
+On the other hand, the compute units on these accelerator cards are 
+relatively simple compared to a CPU, making them not suitable for complex 
+computational tasks.
+
+DWT requires repetitive calculation on arrays of data, with little to no
+dependency between different arrays.
+%
+Such problems would perfectly fit in the many-core architecture, once we
+successfully implement the DWT calculation of arrays on a target many-core
+architecture.
+%
+In this term project, I am going to explore porting the DWT onto the 
+many-core architecture.
+
+
+\section{Implementation Plan}
+The implementation of porting the DWT onto the many-core architectures
+is based on two parts of existing work: 1) the VAPOR software 
+package~\cite{clyne2007interactive},
+and 2) the EAVL framework~\cite{meredith2012distributed}.
+
+
+
+
+\bibliographystyle{plain}
+\bibliography{main}
+\end{document}
