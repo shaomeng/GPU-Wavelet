@@ -1,0 +1,56 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{Survey on Discrete Wavelet Transforms Using GPU}
+\author{Samuel Li}
+\date{April 2015}
+
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{color}
+\newcommand{\fix}[1]{\textcolor{red}{#1}} %Put words in Red
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Discrete Wavelet Transform (DWT) is widely used in data reduction applications.
+%
+However, such transforms are relatively computationally intensive.
+%
+To accelerate the calculation of DWT, researchers have applied various parallel
+computing techniques, based on the distributed memory architecture~\cite{
+chadha2002scalable, woo1995parallel, uhl1996wavelet, nielsen1997scalable}
+and the shared memory architecture~\cite{
+lucka2000parallel, uhl2000optimization,kutil1999hardware}.
+%
+In the recent years, the many-core architecture, such as GPU acceleration 
+cards, have emerged in the parallel computing field.
+%
+In this survey paper, we cover many topics regarding calculation of DWT on GPUs.
+%
+More specifically, we start the survey from technical discussion and evaluation
+of implementing the DWT on GPUs~\cite{tenllado2008parallel, van2011accelerating,
+garcia2005gpu}.
+%
+Then we present a few successful use cases of GPU in parallel DWT~\cite{
+strengert2004hierarchical, strengert2006pyramid, wong2007discrete}.
+%
+Finally, to prepare for the exascale computing, we survey the use of 
+heterogeneous architecture with GPUs and multi-core CPUs together,
+as well as the GPU clusters~\cite{franco2009parallel, franco2010parallel,
+strengert2005large, franco20122d, rossinelli2011multicore}.
+%
+\fix{It would be interesting to see how this
+field has evolved over the last 20 years (the time span of your
+references) relative to the parallel architecture changes, especially in
+the GPU architectures.}
+\end{abstract}
+
+\section{Introduction}
+
+
+\bibliographystyle{plain}
+\bibliography{main}
+\end{document}
