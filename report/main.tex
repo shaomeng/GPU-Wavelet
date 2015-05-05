@@ -35,7 +35,7 @@ relative different directions, both aiming data reduction.
 %
 In the first direction, researchers use the DWT to provide data access
 in a multi-resolution fashion, meaning that an approximation of the volume data
-set is loaded at a lower resolution at first, and the region of interest
+set is loaded at a lower resolution at first, and the particular region of interest
 is then reconstructed with higher resolutions~\cite{mallat1989theory,
 kanai1998digital, baldwin2003multi}.
 %
@@ -43,14 +43,14 @@ In the second direction, the volume data is reconstructed at the
 original resolution, but using a subset of the wavelet transformed 
 data.
 %
-This results in a lossy compression~\cite{bethel2012high,
+The second direction results in a lossy compression~\cite{bethel2012high,
 norton2012vapor}.
 
 In a typical use case, the DWT is normally applied on each dimension of a
 volume data set (e.g. X, Y, and Z dimension). 
 %
-Moreover, people always apply multiple rounds of DWT to achieve better
-data reduction in applications.
+Moreover, in practice, people always apply multiple rounds of DWT to achieve better
+data reduction. 
 %
 The overall DWT on a volume data set is then becoming a heavy computation
 task in most systems, thus a faster computation of DWT is much desired. 
@@ -69,8 +69,8 @@ DWT requires repetitive calculation on arrays of data, with little to no
 dependency between different arrays.
 %
 Such problems would perfectly fit into the many-core architecture, once we
-successfully implemented the DWT calculation of arrays on a target many-core
-architecture.
+successfully implemented the DWT calculation of a single array on a 
+target many-core architecture.
 %
 In this term project, I am going to explore parallelizing the DWT algorithm 
 to fit into the many-core architectures.
@@ -89,7 +89,8 @@ Section~\ref{sec:intro}: multi-resolution and lossy compression.
 VAPOR's data reduction functionality is achieved by using wavelet transforms.
 %
 Moreover, VAPOR is able to use three different forms of wavelet, which 
-are also known as wavelet kernels: Haar, CDF~9/7, and CDF~8/4.  
+are also known as wavelet kernels: Haar~\cite{haar1910theorie}, 
+CDF~9/7, and CDF~8/4~\cite{cohen1992biorthogonal}.
 %
 Each wavelet kernel has its advantages and disadvantages in practical use.
 
@@ -97,7 +98,8 @@ EAVL is a scientific visualization framework that aims to better support
 extreme-scale analysis and visualization on the many-core architectures.
 %
 It provides data structure and operators for parallel computing to the 
-users, while hiding the implementation details on a certain architecture.
+users, while hiding the implementation details on a certain architecture
+(CUDA, OpenMP, OpenCL, etc.).
 
 I plan to implement my project based on both VAPOR and EAVL. 
 %
@@ -109,12 +111,12 @@ component of my project, rather than the details of DWT.
 %
 On the other hand, EAVL provides a unified programming interface for 
 different many-core architectures, which essentially eases the effort
-of porting my code from one machine to another.
+of porting my code from one architecture to another.
 
 My project plan has three phases:
 \begin{enumerate}
 \item Understand the sequential DWT code from VAPOR, 
-and identify the part that can be parallelized.
+and identify the part(s) that can be parallelized.
 %
 \item Parallelize the sequential DWT code under the EAVL framework.
 %
@@ -129,7 +131,7 @@ The expected result of this project is a stable and practically useful
 implementation of the DWT on many-core architectures.
 %
 Along this process, I will gain more understanding on parallel
-computing, as well as wavelet transform itself.
+computing, as well as the wavelet transform itself.
 %
 The ultimate goal is to get myself ready for algorithm designing and 
 programming for the many-core architectures in the future.
