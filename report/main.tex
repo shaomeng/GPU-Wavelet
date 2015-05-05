@@ -1,7 +1,7 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 
-\title{Porting Wavelet Transforms onto Many-core Architectures ---
+\title{Implementing Wavelet Transforms onto Many-core Architectures ---
         Using the EAVL Framework}
 \author{Samuel Li}
 \date{May 2015}
@@ -15,22 +15,17 @@
 
 \maketitle
 
-\begin{abstract}
-\begin{itemize}
-\item the area and problems to be explored, 
-\item the motivations for choosing this area, 
-\item possible directions of investigation, 
-\item proposed type of project, 
-\item the expected results.
-\end{itemize}
-\end{abstract}
+% \begin{abstract}
+% \end{abstract}
 
 \section{Introduction}
+\label{sec:intro}
+%
 Wavelet transform is a technique rooted from the signal processing 
 community~\cite{daubechies1990wavelet, mallat1999wavelet},
 and soon people discovered its capacity in data reduction.
 %
-One of the most prominent use of wavelet in data reduction has been
+One of the most prominent uses of wavelet in data reduction has been
 the JPEG2000 still image compression
 standard~\cite{adams2001jpeg,usevitch2001tutorial}. 
 
@@ -41,11 +36,14 @@ relative different directions, both aiming data reduction.
 In the first direction, researchers use the DWT to provide data access
 in a multi-resolution fashion, meaning that an approximation of the volume data
 set is loaded at a lower resolution at first, and the region of interest
-is then reconstructed with a higher resolution~\cite{mallat1989theory,
+is then reconstructed with higher resolutions~\cite{mallat1989theory,
 kanai1998digital, baldwin2003multi}.
 %
 In the second direction, the volume data is reconstructed at the 
-original resolution, but at a lossy manner~\cite{bethel2012high,
+original resolution, but using a subset of the wavelet transformed 
+data.
+%
+This results in a lossy compression~\cite{bethel2012high,
 norton2012vapor}.
 
 In a typical use case, the DWT is normally applied on each dimension of a
@@ -70,19 +68,72 @@ computational tasks.
 DWT requires repetitive calculation on arrays of data, with little to no
 dependency between different arrays.
 %
-Such problems would perfectly fit in the many-core architecture, once we
-successfully implement the DWT calculation of arrays on a target many-core
+Such problems would perfectly fit into the many-core architecture, once we
+successfully implemented the DWT calculation of arrays on a target many-core
 architecture.
 %
-In this term project, I am going to explore porting the DWT onto the 
-many-core architecture.
+In this term project, I am going to explore parallelizing the DWT algorithm 
+to fit into the many-core architectures.
 
 
 \section{Implementation Plan}
 The implementation of porting the DWT onto the many-core architectures
-is based on two parts of existing work: 1) the VAPOR software 
+is based on two existing open-sourced projects: 1) the VAPOR software 
 package~\cite{clyne2007interactive},
 and 2) the EAVL framework~\cite{meredith2012distributed}.
+
+VAPOR is a scientific visualization package, and it highlights the 
+support for data reduction in both directions we talked in
+Section~\ref{sec:intro}: multi-resolution and lossy compression.
+%
+VAPOR's data reduction functionality is achieved by using wavelet transforms.
+%
+Moreover, VAPOR is able to use three different forms of wavelet, which 
+are also known as wavelet kernels: Haar, CDF~9/7, and CDF~8/4.  
+%
+Each wavelet kernel has its advantages and disadvantages in practical use.
+
+EAVL is a scientific visualization framework that aims to better support
+extreme-scale analysis and visualization on the many-core architectures.
+%
+It provides data structure and operators for parallel computing to the 
+users, while hiding the implementation details on a certain architecture.
+
+I plan to implement my project based on both VAPOR and EAVL. 
+%
+On the one hand, VAPOR has already got DWT implemented in serial, 
+including three different wavelet kernels.
+%
+Starting from VAPOR enables me to focus more on the parallel computing 
+component of my project, rather than the details of DWT.
+%
+On the other hand, EAVL provides a unified programming interface for 
+different many-core architectures, which essentially eases the effort
+of porting my code from one machine to another.
+
+My project plan has three phases:
+\begin{enumerate}
+\item Understand the sequential DWT code from VAPOR, 
+and identify the part that can be parallelized.
+%
+\item Parallelize the sequential DWT code under the EAVL framework.
+%
+\item Run performance tests and tune my code to achieve a stable version
+of DWT on many-core architectures.
+\end{enumerate}
+
+
+\section{Expected Results}
+%
+The expected result of this project is a stable and practically useful 
+implementation of the DWT on many-core architectures.
+%
+Along this process, I will gain more understanding on parallel
+computing, as well as wavelet transform itself.
+%
+The ultimate goal is to get myself ready for algorithm designing and 
+programming for the many-core architectures in the future.
+
 
 
 
