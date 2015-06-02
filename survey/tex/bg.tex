@@ -34,11 +34,11 @@ or the number of iterations reaches the maxinum value set by the user.
 %from the coefficients, is named \textit{reconstruction}.
 %
 Figure~\ref{fig:example1} illustrates an example of applying DWTs for 
-three rounds on an 8-element signal.
+three iterations on an 8-element signal.
 
 
 
-\begin{figure}[p]
+\begin{figure}
     \centering
     \includegraphics[width=0.8\textwidth]{fig/example1.png}
     \caption{An example of DWT on a signal with 8 elements.}
@@ -47,7 +47,10 @@ three rounds on an 8-element signal.
 
 
 
-From the perspective of computational models in parallel computing, 
-stencil
+From the perspective of programming models in parallel computing, 
+the calculation of DWT is like applying a stencil pattern --- 
+each output coefficient is calculated from a few input elements. 
+%
+The kernel function of the DWT is the applied stencil in parallel programming.
 
 
