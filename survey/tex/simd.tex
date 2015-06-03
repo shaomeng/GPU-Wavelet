@@ -61,4 +61,11 @@ a very large system with many rows of PEs.
 The experiment shows that the parallel implementation has a better 
 performance than that of a serial implementation on the SPARC 1 workstation,
 whose processor is at least 100 times faster than that of the MasPar.
-
+%
+Scalability wise, this pipeline implementation is able to keep good speedups
+when the problem size grows.
+%
+This is because larger problems naturally enables more iterations of DWT
+to apply on.
+%
+As a result, the execution pipeline has more steps, and can run more efficiently.
