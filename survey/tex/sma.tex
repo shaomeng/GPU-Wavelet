@@ -1,0 +1,23 @@
+When performing DWT, the calculation of each coefficients depends only 
+on a few input elements from its neighbors (see stencil pattern 
+discussion in Section~\ref{sec:bg}).
+%
+This property makes the calculation of DWT fit in the 
+Shared Memory Architecture (SMA) very well, 
+by assigning each PE a small chunk of the input signal array
+to operate on.
+%
+Research works from Kutil et. al. and Lucka et. al. both employ
+this parallel scheme~\cite{kutil1999hardware, lucka2000parallel}.
+
+Experiments by Kutil et. al. on the SGI POWERChallengeGR machine showed 
+a linear speedup up to 10 PEs, while the parallel efficiency drops 
+dramatically with more PEs.
+%
+The researchers than decided that the efficiency was hurt by 
+cache misses when more PEs are involved in.
+%
+These observations and analyses are confirmed by Lucka et. al.
+%
+Their experiments and analyses showed similar speedup patterns
+and performance impact by cache misses.
