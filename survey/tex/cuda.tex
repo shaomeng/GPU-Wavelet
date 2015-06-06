@@ -1,0 +1,62 @@
+Traditionally, GPUs are used for fast processing on 
+graphics-related calculations.
+%
+A GPU usually consists of hundreds or thousands of processing elements,
+though each is simply focusing on floating point operations. 
+%
+As a result, a GPU has very high FLOPS to carry out graphics-related
+calculations, but lack the ability to 
+perform sophisticated operations like a CPU.
+
+
+More recently, the GPU venders have developed APIs that allow users
+to program general-purposed programs on the GPUs. 
+%
+As a result, the GPUs have become an important architecture in 
+parallel computing community.
+%
+The newest supercomputer ranking, top500, reports that three out of 
+top ten supercomputer systems are equipted with GPUs.
+
+
+Despite the same vision of using GPUs to accelerate the computation,
+different venders of GPUs provide different APIs. 
+%
+The most successful one, Compute Unified Device Architrcture (CUDA), 
+is currently from NVIDIA.
+%
+Our focus will be specifically on the CUDA architecture in the rest 
+of this section.
+
+
+\subsection{Hardware Organization and Programming Model}
+%
+With hundreds to thousands of cores and the associated memory, 
+a CUDA GPU is organized in its unique way. 
+%
+Franco et. al. provides a good overview of such 
+architecture~\cite{franco2009parallel}.
+
+
+CUDA cores are organized in two hierarchies in a CUDA GPU:
+first a certain number of CUDA cores are grouped together as a multiprocessor,
+and second a set of multiprocessor are put together on a CUDA GPU.
+%
+Here each multiprocessor has a SIMD architecture.
+
+
+The memory organization on a CUDA GPU is also in hierarchy.
+%
+In the most fine-grained level, there are registers attached to each CUDA core.
+%
+The next level memory is \textit{shared memory}, which is shared by all cores
+in a multiprocessor.
+%
+\textit{Device memory} is on the GPU card, and is shared by all the CUDA cores.
+%
+In addition to shared memories and device memories, there are also dedicated 
+memories for particular uses, namely constant cache and texture cache.
+%
+We are not going to cover these dedicated memories in this survey.
+%
+At last, the hardware model of a CUDA CPU is shown in Figure~\ref{fig:cuda}.
