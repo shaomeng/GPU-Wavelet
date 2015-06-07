@@ -30,6 +30,7 @@ of this section.
 
 
 \subsection{Hardware Organization and Programming Model}
+\label{sec:cuda-model}
 %
 With hundreds to thousands of cores and the associated memory, 
 a CUDA GPU is organized in its unique way. 
@@ -59,4 +60,184 @@ memories for particular uses, namely constant cache and texture cache.
 %
 We are not going to cover these dedicated memories in this survey.
 %
-At last, the hardware model of a CUDA CPU is shown in Figure~\ref{fig:cuda}.
+At last, the hardware model of a CUDA GPU is shown in Figure~\ref{fig:cuda-hw}.
+%
+
+%\begin{figure}
+%    \centering
+%    \includegraphics[width=0.8\textwidth]{fig/cuda-hw.png}
+%    \caption{Hardware model of a CUDA GPU.}
+%    \label{fig:cuda-hw}
+%\end{figure}
+
+
+In the CUDA programming model, a multi-threaded task is partioned into 
+many \textit{blocks}.
+%
+Threads in the same group are executing the same instructions.
+%
+From the perspective of the program, there could be as many blocks
+as necessary.
+%
+Eventually, each thread is identified using its \textit{threadID} in 
+the block, and the \textit{blockID} of that particular block.
+%
+When executing, each block of threads is mapped to run on one CUDA 
+multiprocessor. 
+%
+This mapping is managed by CUDA to be scalable, meaning that each CUDA 
+multiprocessor is always executing a thread block, until the task
+is finished~\cite{cudaprogramming}.
+%
+This CUDA programming model is illustrated in Figure~\ref{fig:cuda-pro}.
+
+
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.46\textwidth}
+                \includegraphics[width=\textwidth]{fig/cuda-hw.png}
+                \caption{Hardware model of a CUDA GPU. 
+                CUDA cores, multiprocessor, and the GPU card
+                make a hierarchy together.}
+                \label{fig:cuda-hw}
+        \end{subfigure}
+\quad
+    \begin{subfigure}[b]{0.42\textwidth}
+        \includegraphics[width=\textwidth]{fig/cuda-pro.png}
+        \caption{Programming model on a CUDA GPU.
+                 Threadsblocks, and grids make a programming 
+                 hierarchy.}
+        \label{fig:cuda-pro}
+    \end{subfigure}
+%
+    \caption{CUDA hardware and programming model.}
+\end{figure}
+
+
+
+\subsection{Naive Parallelism using CUDA}
+\label{sec:cuda-naive}
+%
+Franco et. al.~\cite{franco2009parallel} parallelized two-dimensional 
+DWT following the similar approach
+illustrated in the top diagram of Figure~\ref{fig:c}.
+%
+More specifically, the researchers identified two sections of DWT
+that could be paralllized: the one-dimensional DWT on rows, and the
+matrix transpose.
+%
+When implementing such algorithms using CUDA, the program specifies
+sections to run on the GPU as \textit{kernels}, and pass the data 
+as well as operations onto the GPU to execute.
+%
+The calculation results from GPU executions are then copied back
+to continue this algorithm for further operations.
+
+Experiment results show that the CUDA implementation of 
+two-dimensional DWT on an NVIDIA Tesla C870 GPU achieves 
+10x to 21.7x speedups, compared to the optimized implementation 
+on an Intel Core 2 Quad CPU.
+%
+A breakdown of the total calculation time further shows that 
+the two data transfer steps, which move data from system main memory
+to the GPU to perform DWT and matrix transpose, take around half
+of the total elapsed time.
+%
+This result indicates that reducing data movement between the GPU and 
+system main memory is a direction to further increase performance.  
+
+
+\subsection{To Make Better Use of Blocks in CUDA}
+%
+Lann et. al. investigated better use of the blocks in CUDA,
+and proposed a different way to partition the input data to fit in
+this model~\cite{van2011accelerating}.
+%
+This section is going to briefly introduce two different approaches 
+the researchers use to perform DWT on rows and columns.
+
+
+
+When an algorithm designer makes decisions to move multi-threaded tasks
+to the GPU, one always needs to partition the problem carefully,
+with the consideration of memory operations.
+%
+Specifically, the \textit{coalesced} reads and writes,
+meaning that reads and writes of a continuious chunk of memory,
+are always preferable.
+%
+In a two-dimensional data set that is stored in a row-oriented fashion,
+accessing data row by row naturally implies coalesced reads and writes,
+but column by column results in discrete random data access.
+%
+As a result, Lann et. al. designed different data partitioning schemes 
+for DWT on rows and on columns.
+
+
+In the first case of DWT on rows, the researchers partitioned the 
+two-dimensional data into many 1D arrays, each representing one row
+from the original data set.
+%
+Each array is then mapped onto one block in the CUDA programming model.
+%
+Figure~\ref{fig:cuda-row} illustrates this approach: 
+each thread block performs DWT on one row of input data.
+%
+The black squares indicate that one thread moves along the row
+as the block calculates DWT in the one-dimension fashion.
+
+
+In the second case of DWT on columns, a simple partition of every column
+would not work well, because of the discrete memory access.
+%
+The researchers then decided to partition the data in ``slabs,"
+rather than single columns, to map to the programming blocks.
+%
+Figure~\ref{fig:cuda-column} compares this partitioning with 
+the partitioning for DWT on rows.
+
+
+Experiments showed that DWT on columns using this ``slab"-like 
+partitioning performs only $10\%$ to $20\%$ slower than DWT on rows.
+%
+The researchers also compared this approach to the one in 
+Section~\ref{sec:cuda-naive}, which involves a matrix transpose
+and then performs DWT on columns just in consecutive memories.
+%
+The results are still in favor of their approach --- the total
+execution time is 2x to 2.5x faster than the approach that involves
+matrix transpose.
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.85\textwidth}
+                \includegraphics[width=\textwidth]{fig/row.png}
+                \caption{
+                Data partition of the two-dimensional data set onto 
+                blocks in a GPU programming model to perform DWTs on rows.
+                %
+                Each row is mapped to a block in this figure, and the black
+                square shows a thread process data along this row. 
+                }
+                \label{fig:cuda-row}
+        \end{subfigure}
+\quad
+    \begin{subfigure}[b]{0.85\textwidth}
+        \includegraphics[width=\textwidth]{fig/column.png}
+        \caption{
+                Data partition of the two-dimensional data onto 
+                blocks in a GPU programming model to perform DWTs on columns.
+                %
+                Each block contains $S$ columns together in this figure.
+                }
+        \label{fig:cuda-column}
+    \end{subfigure}
+%
+    \caption{Different data partitioning schemes for DWT on rows and columns.}
+\end{figure}
+
+
+
+
+
