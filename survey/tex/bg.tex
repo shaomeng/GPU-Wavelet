@@ -46,12 +46,22 @@ three iterations on an 8-element signal.
 \end{figure}
 
 
-TODO: talk about multi-dimensional DWT.
-
 From the perspective of programming models in parallel computing, 
 the calculation of DWT is like applying a stencil pattern --- 
 each output coefficient is calculated from a few input elements. 
 %
 The kernel function of the DWT is the applied stencil in parallel programming.
+
+
+We can also perform DWTs on multi-dimensional data.
+%
+The calculation of multi-dimensional DWT is based on one-dimensional DWT:
+we essentially perform many one-dimensional DWTs on each of the dimensions
+of a multi-dimensional data.
+%
+For example, the calculation of DWT on a two-dimensional image is basically 
+performing 1D DWTs on each row of the image, and then perform 1D DWTs on 
+each column of this image.
+
 
 

@@ -1,7 +1,7 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 
-\title{Survey on Discrete Wavelet Transforms Using GPU}
+\title{Survey on Discrete Wavelet Transforms Using Parallel Architectures}
 \author{Samuel Li}
 \date{April 2015}
 
@@ -18,62 +18,126 @@
 
 \maketitle
 
-\begin{abstract}
-Discrete Wavelet Transform (DWT) is widely used in data reduction applications.
+%\begin{abstract}
+%Discrete Wavelet Transform (DWT) is widely used in data reduction applications.
+%%
+%However, such transforms are relatively computationally intensive.
 %
-However, such transforms are relatively computationally intensive.
+%To accelerate the calculation of DWT, researchers have applied various parallel
+%computing techniques, based on the distributed memory architecture~\cite{
+%chadha2002scalable, nielsen1997scalable}
+%and the shared memory architecture~\cite{
+%kutil1999hardware,lucka2000parallel}.
 %
-To accelerate the calculation of DWT, researchers have applied various parallel
-computing techniques, based on the distributed memory architecture~\cite{
-chadha2002scalable, nielsen1997scalable}
-and the shared memory architecture~\cite{
-kutil1999hardware,lucka2000parallel}.
+%In the recent years, the many-core architecture, such as GPU acceleration 
+%cards, have emerged in the parallel computing field.
 %
-In the recent years, the many-core architecture, such as GPU acceleration 
-cards, have emerged in the parallel computing field.
+%In this survey paper, we cover many topics regarding calculation of DWT on 
+%parallel architectures.
 %
-In this survey paper, we cover many topics regarding calculation of DWT on GPUs.
+%More specifically, we start the survey from technical discussion and evaluation
+%of implementing the DWT on GPUs~\cite{van2011accelerating}.
 %
-More specifically, we start the survey from technical discussion and evaluation
-of implementing the DWT on GPUs~\cite{tenllado2008parallel, van2011accelerating,
-garcia2005gpu}.
+%Finally, to prepare for the exascale computing, we survey the use of 
+%heterogeneous architecture with GPUs and multi-core CPUs together,
+%as well as the GPU clusters~\cite{franco2009parallel}.
 %
-Then we present a few successful use cases of GPU in parallel DWT~\cite{
-strengert2004hierarchical, strengert2006pyramid, wong2007discrete,
-treib2012turbulence}.
-%
-Finally, to prepare for the exascale computing, we survey the use of 
-heterogeneous architecture with GPUs and multi-core CPUs together,
-as well as the GPU clusters~\cite{franco2009parallel, franco2010parallel,
-strengert2005large, franco20122d, rossinelli2011multicore}.
-%
-\end{abstract}
+%\end{abstract}
 
 \section{Introduction}
+%
+Wavelet Transforms originated from signal processing community as a new 
+tool method to perform signal analysis.
+%
+Researchers soon expanded the use of wavelet transforms to digital signals,
+resulting in the calculation of discrete wavelet transform (DWT).
+%
+While DWTs are still used in digital signal analysis, one of the most 
+prominent use has been data compression, as well as providing a
+\textit{progressive data access} to data analysis tasks.
+%
+With progressive data access, a data analysis process starts with a coarser
+version of the data, which takes only a fraction of the raw data, 
+and then decides the region of interest to continue investigation, during
+which more detailed data is loaded for that particular region.
+%
+As examples, the JPEG~2000 image standard makes use of wavelet
+transforms to achieve data compression~\cite{skodras2001jpeg},
+and the VAPoR software package uses wavelet transforms to provide
+progressive data access~\cite{clyne2003multiresolution}.
+
+
+The calculation of DWT is a computation intensive task.
+%
+Researchers have been always adopting the latest developments in 
+parallel computing to accelerate this calculation.
+%
+Some of the architectures that researchers have ported DWT to
+include single instruction multiple data, shared memory architecture,
+and distributed memory systems.
+%
+In the recent years, the general-purpose graphics processing units
+(GPGPU) have emerged as a new powerful tool to achieve high performance.
+%
+In this survery paper, I am going to briefly introduces some successful
+implementations of DWT on above parallel architectures.
+%
+I especially pay attention on how inter-processor communication is handled
+in these implementations, since data movement consumes a great portion 
+of total execution time in parallel computing settings.
+%
+GPGPU is a little special among all these architectures, because it has 
+many more processing units than other architectures (hundreds to thousands).
+%
+Data partitioning then requires more attention than the other architectures, 
+which we will focus to discuss in the survey.
+
+
+This survey is organized as following:
+Section~\ref{sec:bg} talks about background knowledge of wavelet transforms.
+%
+Section~\ref{sec:simd} to \ref{sec:opencl} discuss implementation concerns for
+architectures single instruction multiple data machine, shared memory architecture,
+distributed memory systems, GPGPU with CUDA, and GPGPU with OpenCL respectively.
+%
+Section~\ref{sec:conclusion} concludes this survey paper.
+
 
 \section{Background of Wavelet Transforms}
-\input{tex/bg}
 \label{sec:bg}
+\input{tex/bg}
 
 \section{Single Instruction Multiple Data}
-\input{tex/simd}
 \label{sec:simd}
+\input{tex/simd}
 
 \section{Shared Memory Architecture}
-\input{tex/sma}
 \label{sec:sma}
+\input{tex/sma}
 
 \section{Distributed Memory Systems}
-\input{tex/dma}
 \label{sec:dma}
+\input{tex/dma}
 
 \section{CUDA architecture}
-\input{tex/cuda}
 \label{sec:cuda}
+\input{tex/cuda}
 
 \section{Open Programming Language}
-\input{tex/opencl}
 \label{sec:opencl}
+\input{tex/opencl}
+
+\section{Conclusion}
+\label{sec:conclusion}
+%
+We surveyed discrete wavelet implementation on parallel architectures.
+%
+The parallel architectures cover a wide time range from 1990s to 2010s,
+including single instruction multiple data machine, shared memory architecture, 
+distributed memory systems, GPGPU with CUDA, and GPGPU with OpenCL. 
+%
+We focused on how data moevement is optimized to fit the parallel architectures,
+as well as how data partition affects the performance in the GPGPU architectures.
 
 \bibliographystyle{plainyr} 
 %\bibliographystyle{plain}
