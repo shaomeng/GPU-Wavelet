@@ -238,6 +238,40 @@ matrix transpose.
 \end{figure}
 
 
+\subsection{Optimization for DWT on GPUs}
+\label{sec:optimize}
+%
+Bernabe et. al. proposed an automatical technique to optimize the DWT on 
+GPUs~\cite{bernabe2013optimization}.
+%
+The goal of the optimization is to maximize the occupancy of each CUDA 
+multiprocessor.
+%
+The optimization algorithm takes input from the physical specifications 
+of the GPU card, the CUDA occupancy calculator, the routine to execute
+on the GPU, and a few heuristic rules.
+%
+The key parameter to optimize is the block size, and then further the 
+grid size based on optimized block sizes.
 
+
+The researchers tested this automatic optimization technique on three
+test data sets, and three GPU cards.
+%
+Test results showed that the occupancy of multiprocessor do vary on 
+different GPU cards, and on different test data sets.
+%
+The optimization technique is able to choose the best block size for 
+each problem.
+%
+An interesting observation is that though occupancy of a same GPU 
+testing on different data set varies, the optimal block size seems
+to be the same. 
+%
+For example, both Tesla C870 and Fermi C2050 GPUs have 192 as the optimal
+block size, while the other tested card has 256 as optimal block size.
+%
+It should be interesting to see more test results and decide if a single 
+block size value can fit all problems on one specific GPU card.
 
 
