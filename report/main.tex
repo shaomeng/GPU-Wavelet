@@ -53,7 +53,9 @@ Moreover, in practice, people always apply multiple rounds of DWT to achieve bet
 data reduction. 
 %
 The overall DWT on a volume data set is then becoming a heavy computation
-task in most systems, thus a faster computation of DWT is much desired. 
+task in most systems.
+%
+As a result, people need a faster way to calculate DWT. 
 
 Many-core architectures have emerged recently as accelerators for a 
 traditional computer system.
@@ -68,9 +70,21 @@ computational tasks.
 DWT requires repetitive calculation on arrays of data, with little to no
 dependency between different arrays.
 %
-Such problems would perfectly fit into the many-core architecture, once we
-successfully implemented the DWT calculation of a single array on a 
-target many-core architecture.
+The actual calculations performed on data items are convolutions
+with the given filters. 
+%
+The width of the wavelet filter decides how many data items are 
+involved in one convolution.
+%
+To parallelize this calculation, many convolutions can be performed
+at the same time.
+%
+From the perspective of parallel computing, this process is applying
+a stencil pattern.
+%
+%Such problems would perfectly fit into the many-core architecture, once we
+%successfully implemented the DWT calculation of a single array on a 
+%target many-core architecture.
 %
 In this term project, I am going to explore parallelizing the DWT algorithm 
 to fit into the many-core architectures.
