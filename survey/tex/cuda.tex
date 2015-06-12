@@ -16,13 +16,13 @@ As a result, the GPUs have become an important architecture in
 parallel computing community.
 %
 The newest supercomputer ranking, top500, reports that three out of 
-top ten supercomputer systems are equipted with GPUs.
+top ten supercomputer systems are equippted with GPUs.
 
 
 Despite the same vision of using GPUs to accelerate the computation,
 different venders of GPUs provide different APIs. 
 %
-The most successful one, Compute Unified Device Architrcture (CUDA), 
+The most successful one, Compute Unified Device Architecture (CUDA), 
 is currently from NVIDIA.
 %
 Our focus will be specifically on the CUDA architecture in the rest 
@@ -71,7 +71,7 @@ At last, the hardware model of a CUDA GPU is shown in Figure~\ref{fig:cuda-hw}.
 %\end{figure}
 
 
-In the CUDA programming model, a multi-threaded task is partioned into 
+In the CUDA programming model, a multi-threaded task is partitioned into 
 many \textit{blocks}.
 %
 Threads in the same group are executing the same instructions.
@@ -106,7 +106,7 @@ This CUDA programming model is illustrated in Figure~\ref{fig:cuda-pro}.
     \begin{subfigure}[b]{0.42\textwidth}
         \includegraphics[width=\textwidth]{fig/cuda-pro.png}
         \caption{Programming model on a CUDA GPU.
-                 Threadsblocks, and grids make a programming 
+                 Threads, threadsblocks, and grids make a programming 
                  hierarchy.}
         \label{fig:cuda-pro}
     \end{subfigure}
@@ -124,7 +124,7 @@ DWT following the similar approach
 illustrated in the top diagram of Figure~\ref{fig:c}.
 %
 More specifically, the researchers identified two sections of DWT
-that could be paralllized: the one-dimensional DWT on rows, and the
+that could be parallelized: the one-dimensional DWT on rows, and the
 matrix transpose.
 %
 When implementing such algorithms using CUDA, the program specifies
@@ -164,7 +164,7 @@ to the GPU, one always needs to partition the problem carefully,
 with the consideration of memory operations.
 %
 Specifically, the \textit{coalesced} reads and writes,
-meaning that reads and writes of a continuious chunk of memory,
+meaning that reads and writes of a continuous chunk of memory,
 are always preferable.
 %
 In a two-dimensional data set that is stored in a row-oriented fashion,
@@ -241,7 +241,7 @@ matrix transpose.
 \subsection{Optimization for DWT on GPUs}
 \label{sec:optimize}
 %
-Bernabe et. al. proposed an automatical technique to optimize the DWT on 
+Bernabe et. al. proposed an automatic technique to optimize the DWT on 
 GPUs~\cite{bernabe2013optimization}.
 %
 The goal of the optimization is to maximize the occupancy of each CUDA 

@@ -25,15 +25,15 @@ MasPar has 2048 PEs organized in a 64x32
 mesh topology, as shown in Figure~\ref{fig:simd1}.
 %
 This implementation takes use of the row structures of available PEs,
-by mapping an one-dimensional intput signal onto a row of PEs to process.
+by mapping an one-dimensional input signal onto a row of PEs to process.
 %
-More specifically, a row of PEs take input values and perform calculations 
-togethers, and pass the output coefficients to the next row of PEs.
+More specifically, a row of PEs take input values and performe calculations 
+together, and passes the output coefficients to the next row of PEs.
 %
-The next row of PEs then perform the next iteration of DWT on the input
+The next row of PEs then performs the next iteration of DWT on the input
 coefficients.
 %
-At the same time, the first row of PEs take in new input to calculate on.
+At the same time, the first row of PEs takes in new input to calculate on.
 %
 This process is illustrated in Figure~\ref{fig:simd2}.
 
@@ -65,7 +65,7 @@ whose processor is at least 100 times faster than that of the MasPar.
 Scalability wise, this pipeline implementation is able to keep good speedups
 when the problem size grows.
 %
-This is because larger problems naturally enables more iterations of DWT
+This is because larger problems naturally enable more iterations of DWT
 to apply on.
 %
 As a result, the execution pipeline has more steps, and can run more efficiently.

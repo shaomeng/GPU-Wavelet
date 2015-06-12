@@ -9,7 +9,7 @@ capability for heterogeneous computing.
 %
 In the following subsections, I will briefly introduce the programming 
 model of OpenCL, 
-then provide an use case of performing DWT on OpenCL, 
+then provide a use case of performing DWT on OpenCL, 
 and finally compare OpenCL with CUDA.
 
 
@@ -19,7 +19,7 @@ and finally compare OpenCL with CUDA.
 Sharma et. al. provide an overview of the OpenCL programming 
 model~\cite{sharma2010parallel}.
 %
-This programming model share the same structure as the CUDA model.
+This programming model shares the same structure as the CUDA model.
 %
 In the finest level, each thread is named as a ``work-item".
 %
@@ -33,7 +33,7 @@ In terms of the memory model, the global memory is shared between all
 work-groups, while the local memory is shared by work-items in 
 a particular work-group. 
 %
-Each work-item, then, has its private memory, which is essentially registers.
+Each work-item, then, has its private memory, which are essentially registers.
 %
 Figure~\ref{fig:opencl-model} illustrates this memory model.
 

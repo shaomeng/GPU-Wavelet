@@ -21,11 +21,11 @@ DWTs can also be applied on the coefficients from previous DWTs.
 When applying another round of DWT, transforms are applied on the two
 groups of coefficients separately.
 %
-As a result, the original singal $x[n]$ is represented as 4 groups of 
+As a result, the original signal $x[n]$ is represented as 4 groups of 
 coefficients; each has a size $\frac{N}{4}$.
 %
 This iteration finishes when each of the coefficient groups are small enough,
-or the number of iterations reaches the maxinum value set by the user. 
+or the number of iterations reaches the maximum value set by the user. 
 %
 %Since a singal is decomposed into multiple groups of coefficients,
 %this process is also named a \textit{decomposition}.
@@ -60,7 +60,7 @@ we essentially perform many one-dimensional DWTs on each of the dimensions
 of a multi-dimensional data.
 %
 For example, the calculation of DWT on a two-dimensional image is basically 
-performing 1D DWTs on each row of the image, and then perform 1D DWTs on 
+performing 1D DWTs on each row of the image, following by 1D DWTs on 
 each column of this image.
 
 
