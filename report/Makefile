@@ -1,10 +1,13 @@
-all: main
+all: main.pdf
 
-main: *.tex *.bib
+main.pdf: *.tex *.bib
 	pdflatex main.tex
 	bibtex main 
 	touch main.tex
 	pdflatex main.tex
+	pdflatex main.tex
+
+short: *.tex *.bib
 	pdflatex main.tex
 
 clean:

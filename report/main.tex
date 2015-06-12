@@ -91,12 +91,38 @@ to fit into the many-core architectures.
 
 
 \section{Implementation Plan}
-The implementation of porting the DWT onto the many-core architectures
-is based on two existing open-sourced projects: 1) the VAPOR software 
-package~\cite{clyne2007interactive},
-and 2) the EAVL framework~\cite{meredith2012distributed}.
+\label{sec:plan}
+%
+Update: 
+%
+While the project direction stays the same, I made changes to the 
+software frameworks I plan to build on.
+%
+More specifically, I decided to use CUDA directly for many-core parallelism,
+instead of the EAVL framework I proposed before.
+%
+The reason to make this change was that I discovered further that EAVL 
+mainly focuses on the massive parallel operations, like \textit{map}, 
+\textit{reduce}, and \textit{gather}, etc.,
+and not providing an access for a single element in an array to visit
+its neighbor elements.
+%
+This ability for a single element to visit its neighbors is essential
+to apply a stencil pattern.
+%
+As a result, I switched to CUDA for my parallel implementation.
+%
+The rest of this section briefly introduces the VAPOR software package that
+I will be using, and my project plans.
 
-VAPOR is a scientific visualization package, and it highlights the 
+
+%The implementation of porting the DWT onto the many-core architectures
+%is based on two existing open-sourced projects: 1) the VAPOR software 
+%package~\cite{clyne2007interactive},
+%and 2) the EAVL framework~\cite{meredith2012distributed}.
+
+VAPOR~\cite{clyne2007interactive}
+is a scientific visualization package, and it highlights the 
 support for data reduction in both directions we talked in
 Section~\ref{sec:intro}: multi-resolution and lossy compression.
 %
@@ -108,36 +134,57 @@ CDF~9/7, and CDF~8/4~\cite{cohen1992biorthogonal}.
 %
 Each wavelet kernel has its advantages and disadvantages in practical use.
 
-EAVL is a scientific visualization framework that aims to better support
-extreme-scale analysis and visualization on the many-core architectures.
-%
-It provides data structure and operators for parallel computing to the 
-users, while hiding the implementation details on a certain architecture
-(CUDA, OpenMP, OpenCL, etc.).
 
-I plan to implement my project based on both VAPOR and EAVL. 
-%
-On the one hand, VAPOR has already got DWT implemented in serial, 
-including three different wavelet kernels.
+I plan to implement my project based on both VAPOR, because 
+VAPOR has already got DWT implemented in serial, 
+including multiple different wavelet kernels.
 %
 Starting from VAPOR enables me to focus more on the parallel computing 
 component of my project, rather than the details of DWT.
+
+%EAVL is a scientific visualization framework that aims to better support
+%extreme-scale analysis and visualization on the many-core architectures.
 %
-On the other hand, EAVL provides a unified programming interface for 
-different many-core architectures, which essentially eases the effort
-of porting my code from one architecture to another.
+%It provides data structure and operators for parallel computing to the 
+%users, while hiding the implementation details on a certain architecture
+%(CUDA, OpenMP, OpenCL, etc.).
+
+%I plan to implement my project based on both VAPOR and EAVL. 
+%
+%On the one hand, VAPOR has already got DWT implemented in serial, 
+%including three different wavelet kernels.
+%
+%Starting from VAPOR enables me to focus more on the parallel computing 
+%component of my project, rather than the details of DWT.
+%
+%On the other hand, EAVL provides a unified programming interface for 
+%different many-core architectures, which essentially eases the effort
+%of porting my code from one architecture to another.
 
 My project plan has three phases:
 \begin{enumerate}
 \item Understand the sequential DWT code from VAPOR, 
 and identify the part(s) that can be parallelized.
 %
-\item Parallelize the sequential DWT code under the EAVL framework.
+\item Parallelize the sequential DWT code using CUDA.
 %
 \item Run performance tests and tune my code to achieve a stable version
 of DWT on many-core architectures.
 \end{enumerate}
 
+
+\section{Implementation Details}
+\label{sec:implementation}
+%
+My implementation focused on parallelizing the calculation of convolution 
+between the wavelet filter and input signal.
+%
+In the paradigm of CUDA calculation, each thread takes care of the
+calculation of a single element, so instead of using a loop over the entire
+array, we use a wavelet kernel that identifies the current element index
+and does the calculation on that element.
+%
+//TODO: put algorithm here
 
 \section{Expected Results}
 %
