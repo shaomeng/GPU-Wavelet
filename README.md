@@ -1,3 +1,5 @@
 # GPU-Wavelet
-Firstly my readings about the GPU-wavelet topic go here.
-Secondly I'll add my codes here. 
+My write-ups for the Parallel Computing class in Spring 2015.
+The topic is performing wavelet transforms on GPUs.
+The two documents are paper surveys at the beginning of this project,
+and the final report after finishing this project.
